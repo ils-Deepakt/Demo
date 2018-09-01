@@ -1,0 +1,40 @@
+@import "node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "node_modules/font-awesome/css/font-awesome.min.css";
+
+.navbar{
+    padding: 0;
+}
+
+.container-fluid{
+    margin-top: 5%;
+}
+
+.logo{
+    width: 170px;
+    height: 60px;
+    border:2px solid white;
+    border-radius: 10px;
+}
+
+.jumbotron{
+    color: black;
+    padding: 1rem 2rem;
+    background-color:white;
+}
+
+body{
+    background: url('assets/img/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Open Sans';
+}
+
+.formTitle{
+    background-color: #33b5e5;
+    padding: 15px;
+    margin-bottom: -2%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: white;
+    font-weight: bold;
+}

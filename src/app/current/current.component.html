@@ -1,0 +1,111 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-2 recentCities">
+      <div class="text-center formTitle">
+        <span>Recently Searched</span>
+      </div>
+      <div class="jumbotron">
+        <div class="text-center">
+          <button class="btn btn-success" *ngFor="let city of getWeatherService().getStoredData()" style="margin-bottom: 5%" (click)="getCityData(city)">
+              {{city['title']}}
+          </button>
+          <br>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="col-sm-3">
+      <div class="text-center formTitle">
+        <span>Search for weather report</span>
+      </div>
+      <div class="jumbotron">
+        <form novalidate [formGroup]="form" (ngSubmit)="getReport()">
+          <div class="form-group">
+            <label for="cityName">Enter city name</label>
+            <input type="text" formControlName="cityName" class="form-control" list="citiesList" (keyup)="getCityName($event)"/>
+            <img src="../../assets/img/oval.svg" class="loading" alt="Loading" *ngIf="searching"/>
+            <datalist id="citiesList">
+              <option *ngFor="let city of cityList" value="{{city}}"></option>
+            </datalist>
+          </div>
+          <div *ngIf="form.get('cityName').touched">
+            <div *ngIf="form.get('cityName').hasError('required')" class="alert alert-danger">
+              City name is required
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" name="submit" class="btn btn-success" [disabled]="form.invalid">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="float-right col-sm-3" *ngIf="clicked">
+      <div class="jumbotron">
+        <div class="text-center" *ngIf="error==200">
+          <img src="../../assets/img/spinning-circles.svg" alt="Loading">
+        </div>
+        <div class="text-center" *ngIf="(error['status']===404) || error == 404">
+          <div class="alert alert-danger">
+            <div class="text-center" style="font-size: 30px">
+              Oops! 
+            </div>
+            The data could not be found
+          </div>
+          <div class="text-left">
+            <div style="font-size: 20px;">
+              <strong>Here is what you can try:</strong>
+            </div>
+            <ul class="">
+              <li class="" *ngFor="let option of optionsOnError" style="font-size: 15px">{{option}}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="text-center" *ngIf="(error['status']===503)">
+          <img src="../../assets/img/503.png" alt="503"/>
+          <br>
+          <div class="alert alert-danger">
+            Service is unavailable
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3" *ngIf="reportAvailable">
+      <div class="text-center formTitle">
+        <span>Current Weather Report</span>
+      </div>
+      <div class="jumbotron">
+        <div class="text-center">
+          <img src="https://vortex.accuweather.com/adc2010/images/slate/icons/{{weatherIcon}}.svg" class="weather-icon" alt="ICON">
+          <br>
+          <div class="text-capitalize">
+            {{weatherText}}
+          </div>
+          <strong style="font-size: 20px">{{cityGot}}</strong>
+          <br>
+          <strong>{{temperature}}°C</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container-fluid" *ngIf="showPreviousData">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <button class="btn btn-success"(click)="loadPrevData()">Load previous data</button>
+  </div>
+  <br>
+  <div class="row" *ngIf="hasPrevData">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-8">
+      <div class="text-center formTitle prevData">
+        <span>Previous 24 hours report of {{cityGot}}</span>
+      </div>
+      <div class="jumbotron">
+        <canvas id="canvas">{{chart}}</canvas>
+      </div>
+    </div>
+  </div>
+</div>
